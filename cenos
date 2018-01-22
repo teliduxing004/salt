@@ -1,0 +1,54 @@
+[更换python版本]
+yum groupinstall -y "Development tools"
+yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel
+wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz
+tar zxf Python-2.7.13.tgz
+cd Python-2.7.13
+./configure
+make && make install
+mv /usr/bin/python /usr/bin/python.old
+rm -f /usr/bin/python-config
+ln -s /usr/local/bin/python /usr/bin/python
+ln -s /usr/local/bin/python-config/usr/bin/python-config
+ln -s /usr/local/include/python2.7/usr/include/python2.7
+wget https://bootstrap.pypa.io/ez_setup.py -O - | python
+easy_install pip
+pip install distribute
+cp -r /usr/lib/python2.6/site-packages/rpmUtils /usr/local/lib/python2.7/site-packages/
+cp -r /usr/lib/python2.6/site-packages/iniparse /usr/local/lib/python2.7/site-packages/
+cp -r /usr/lib/python2.6/site-packages/urlgrabber /usr/local/lib/python2.7/site-packages/
+cp -r /usr/lib64/python2.6/site-packages/rpm /usr/local/lib/python2.7/site-packages/
+cp -r /usr/lib64/python2.6/site-packages/curl /usr/local/lib/python27/site-packages/
+cp -p /usr/lib64/python2.6/site-packages/pycurl.so /usr/local/lib/python2.7/site-packages/
+cp -p /usr/lib64/python2.6/site-packages/_sqlitecache.so /usr/local/lib/python2.7/site-packages/
+cp -p /usr/lib64/python2.6/site-packages/sqlitecachec.py /usr/local/lib/python2.7/site-packages/
+cp -p /usr/lib64/python2.6/site-packages/sqlitecachec.pyc /usr/local/lib/python2.7/site-packages/
+cp -p /usr/lib64/python2.6/site-packages/sqlitecachec.pyo /usr/local/lib/python2.7/site-packages/
+[换源]
+mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup
+
+mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup
+
+wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+
+yum makecache
+[指定salt版本repo]
+[saltstack-repo]
+name=SaltStack repo for RHEL/CentOS $releasever
+baseurl=https://repo.saltstack.com/yum/redhat/$releasever/$basearch/archive/2015.8.8
+enabled=1
+gpgcheck=1
+gpgkey=https://repo.saltstack.com/yum/redhat/$releasever/$basearch/archive/2015.8.8/SALTSTACK-GPG-KEY.pub
+【安装】
+
+sudo yum install salt-master
+#sudo yum install salt-minion
+sudo yum install salt-ssh
+sudo yum install salt-syndic
+sudo yum install salt-cloud
+sudo yum install salt-api
+
